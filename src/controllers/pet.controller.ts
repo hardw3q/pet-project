@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import {PetService} from '@src/services/pet.service';
 import {CreatePetDto} from '@src/controllers/dto/pet.create.dto';
-import * as console from 'node:console';
+import logger from '../middleware/logger';
 const router = Router();
 const petService = new PetService();
 
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
     const newPet = await petService.create(name);
     res.status(201).json(newPet);
   } catch (e) {
-    console.error('Ошибка при создании питомца:', e);
+    logger.error('Ошибка при создании питомца:', e);
     res.status(500).json({ error: String(e)});
   }
 });
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
     if(!pet) res.status(404).json({error: 'Питомец не найден'})
     res.json(pet);
   } catch (e) {
-    console.error('Ошибка при получении питомца:', e);
+    logger.error('Ошибка при получении питомца:', e);
     res.status(500).json({ error: String(e)});
   }
 });
@@ -41,7 +41,7 @@ router.post('/feed', async (req, res) => {
     }
     res.status(201).json(await petService.feed(Number(id)));
   } catch (e) {
-    console.error('Ошибка при кормлении питомца:', e);
+    logger.error('Ошибка при кормлении питомца:', e);
     res.status(500).json({ error: String(e)});
   }
 });
@@ -53,7 +53,7 @@ router.post('/heal', async (req, res) => {
     }
     res.status(201).json(await petService.heal(Number(id)));
   } catch (e) {
-    console.error('Ошибка при лечении питомца:', e);
+    logger.error('Ошибка при лечении питомца:', e);
     res.status(500).json({ error: String(e)});
   }
 });
@@ -66,7 +66,7 @@ router.post('/play', async (req, res) => {
     }
     res.status(201).json(await petService.play(Number(id)));
   } catch (e) {
-    console.error('Ошибка при игре с питомцем:', e);
+    logger.error('Ошибка при игре с питомцем:', e);
     res.status(500).json({ error: String(e)});
   }
 });
